@@ -1,13 +1,17 @@
 package www.exam.janvier.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "fiches_securite")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class FicheSecuriteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,8 +28,5 @@ public class FicheSecuriteEntity {
 
     @Column(nullable = false)
     private LocalDate dateMaj;
-
-    @OneToOne(mappedBy = "ficheSecurite")
-    private ProduitFicheSecuriteEntity produitFicheSecurite;
 
 }

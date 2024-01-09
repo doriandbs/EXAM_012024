@@ -1,13 +1,18 @@
 package www.exam.janvier.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.Set;
 
 @Entity
 @Table(name="produits")
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public class ProduitEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,6 +21,14 @@ public class ProduitEntity {
     @Column(nullable = false)
     private String nom;
 
-    @ManyToMany(mappedBy = "produits")
-    private Set<UtilisateurEntity> utilisateurs;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "produit_fiche",
+            joinColumns = @JoinColumn(name = "produit_id"),
+            inverseJoinColumns = @JoinColumn(name = "fiche_id")
+    )
+    @JsonIgnore
+    private Set<FicheSecuriteEntity> fichesSecurite;
+
 }

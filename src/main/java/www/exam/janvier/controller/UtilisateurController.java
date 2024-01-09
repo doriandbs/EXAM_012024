@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import www.exam.janvier.DTO.RegisterDTO;
 import www.exam.janvier.entity.RoleEntity;
@@ -15,16 +16,20 @@ import www.exam.janvier.service.UtilisateurService;
 import java.util.Collections;
 
 @RestController
-public class RegisterController {
+@RequestMapping("/admin/user")
+public class UtilisateurController {
 
     @Autowired
     private UtilisateurService utilisateurService;
+
     @Autowired
     private RoleService roleService;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterDTO registerDTO) {
+
+    @PostMapping("/addClient")
+    public ResponseEntity<?> addClient(@RequestBody RegisterDTO registerDTO) {
         if(utilisateurService.existByUsername(registerDTO.getUsername())) {
             return ResponseEntity.badRequest().body("User already registered");
         }

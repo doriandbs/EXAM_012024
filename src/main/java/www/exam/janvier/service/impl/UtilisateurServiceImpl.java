@@ -6,6 +6,8 @@ import www.exam.janvier.entity.UtilisateurEntity;
 import www.exam.janvier.repository.UtilisateurRepository;
 import www.exam.janvier.service.UtilisateurService;
 
+import java.util.Optional;
+
 @Service
 public class UtilisateurServiceImpl implements UtilisateurService {
 
@@ -18,5 +20,14 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     public UtilisateurEntity save(UtilisateurEntity utilisateurEntity){
         return utilisateurRepo.save(utilisateurEntity);
+    }
+
+    public UtilisateurEntity findByUsername(String username){
+        return utilisateurRepo.findByUsername(username);
+    }
+
+    @Override
+    public Optional<UtilisateurEntity> findById(Long id) {
+        return utilisateurRepo.findById(id);
     }
 }
