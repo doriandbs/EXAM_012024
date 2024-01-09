@@ -29,4 +29,13 @@ public class UtilisateurEntity {
     )
     private Set<RoleEntity> roles;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "utilisateur_produit",
+            joinColumns = @JoinColumn(name = "utilisateur_id"),
+            inverseJoinColumns = @JoinColumn(name = "produit_id")
+    )
+    private Set<ProduitEntity> produits;
+
+
 }
