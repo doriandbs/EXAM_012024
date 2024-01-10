@@ -16,9 +16,9 @@ import www.exam.janvier.utils.JwtUtil;
 @RestController
 public class LoginController {
 
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    private JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
     @Autowired
     public LoginController(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
         this.authenticationManager = authenticationManager;

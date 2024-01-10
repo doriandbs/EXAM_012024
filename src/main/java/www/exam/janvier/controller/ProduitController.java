@@ -21,9 +21,9 @@ import java.util.Set;
 @RequestMapping("/produits")
 public class ProduitController {
 
-    private ProduitService produitService;
-    private UtilisateurService utilisateurService;
-    private ProduitMapper produitMapper;
+    private final ProduitService produitService;
+    private final UtilisateurService utilisateurService;
+    private final ProduitMapper produitMapper;
 
     @Autowired
     public ProduitController(ProduitService produitService, UtilisateurService utilisateurService, ProduitMapper produitMapper) {
@@ -42,7 +42,7 @@ public class ProduitController {
         UtilisateurEntity user = userOpt.get();
         Set<ProduitEntity> produits = user.getProduits();
 
-        List<ProduitDTO> produitDTOs = produits.stream().map(produit -> produitMapper.convertToDTO(produit)).toList();
+        List<ProduitDTO> produitDTOs = produits.stream().map(produitMapper::convertToDTO).toList();
 
         return ResponseEntity.ok(produitDTOs);
     }
@@ -51,7 +51,7 @@ public class ProduitController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<ProduitDTO> getAll(){
         List<ProduitEntity> listeProduits = produitService.getAll();
-        return listeProduits.stream().map(produit -> produitMapper.convertToDTO(produit)).toList();
+        return listeProduits.stream().map(produitMapper::convertToDTO).toList();
     }
 
     @PostMapping("/add")

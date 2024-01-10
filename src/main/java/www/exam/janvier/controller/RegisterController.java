@@ -17,9 +17,9 @@ import java.util.Collections;
 @RestController
 public class RegisterController {
 
-    private UtilisateurService utilisateurService;
-    private RoleService roleService;
-    private PasswordEncoder passwordEncoder;
+    private final UtilisateurService utilisateurService;
+    private final RoleService roleService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public RegisterController(RoleService roleService, UtilisateurService utilisateurService, PasswordEncoder passwordEncoder) {

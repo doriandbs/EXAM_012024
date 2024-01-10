@@ -20,10 +20,10 @@ import java.util.List;
 @RequestMapping("/admin/users")
 public class UtilisateurController {
 
-    private UtilisateurService utilisateurService;
-    private RoleService roleService;
-    private PasswordEncoder passwordEncoder;
-    private UtilisateurMapper utilisateurMapper;
+    private final UtilisateurService utilisateurService;
+    private final RoleService roleService;
+    private final PasswordEncoder passwordEncoder;
+    private final UtilisateurMapper utilisateurMapper;
 
     @Autowired
     public UtilisateurController(RoleService roleService, UtilisateurService utilisateurService, PasswordEncoder passwordEncoder,UtilisateurMapper utilisateurMapper) {
@@ -55,7 +55,7 @@ public class UtilisateurController {
     public ResponseEntity<List<UtilisateurDTO>> getAll() {
         List<UtilisateurEntity> clients = utilisateurService.findAllByRole("ROLE_CLIENT");
         List<UtilisateurDTO> clientDTOs = clients.stream()
-                .map(utilisateur -> utilisateurMapper.convertToDTO(utilisateur)).toList();
+                .map(utilisateurMapper::convertToDTO).toList();
         return ResponseEntity.ok(clientDTOs);
     }
 
