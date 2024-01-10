@@ -77,7 +77,7 @@ class SocieteControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(registerDTO)))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Société déjà enregistré"));
+                .andExpect(content().string("Société déjà enregistrée"));
     }
 
     @Test
