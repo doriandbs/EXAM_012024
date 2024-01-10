@@ -44,6 +44,7 @@ public class UtilisateurController {
 
         newUtilisateur.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
         newUtilisateur.setRoles(Collections.singleton(clientRole));
+        newUtilisateur.setMail(registerDTO.getMail());
         UtilisateurEntity userSaved = utilisateurService.save(newUtilisateur);
 
         return ResponseEntity.ok(userSaved);

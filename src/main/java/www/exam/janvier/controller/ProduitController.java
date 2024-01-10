@@ -2,10 +2,10 @@ package www.exam.janvier.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import www.exam.janvier.DTO.FicheSecuriteProduitDTO;
 import www.exam.janvier.DTO.ProduitDTO;
 import www.exam.janvier.entity.ProduitEntity;
 import www.exam.janvier.entity.UtilisateurEntity;
@@ -46,6 +46,20 @@ public class ProduitController {
         List<ProduitDTO> produitDTOs = produits.stream().map(produit -> produitMapper.convertToDTO(produit)).collect(Collectors.toList());
 
         return ResponseEntity.ok(produitDTOs);
+    }
+
+    @GetMapping("/")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<ProduitDTO> getAll(){
+        List<ProduitEntity> listeProduits = produitService.getAll();
+        List<ProduitDTO> produitDTOs = listeProduits.stream().map(produit -> produitMapper.convertToDTO(produit)).collect(Collectors.toList());
+        return produitDTOs;
+    }
+
+    @PostMapping("/add")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> ajouterProduit(@RequestBody FicheSecuriteProduitDTO newProduit ){
+        return ResponseEntity.notFound().build();
     }
 
 
