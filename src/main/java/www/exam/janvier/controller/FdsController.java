@@ -5,15 +5,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import www.exam.janvier.DTO.FdsDTO;
-import www.exam.janvier.entity.FicheSecuriteEntity;
+import www.exam.janvier.DTO.FicheSecuriteProduitDTO;
 import www.exam.janvier.mapper.FdsMapper;
 import www.exam.janvier.service.FdsService;
 import www.exam.janvier.service.UtilisateurService;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/admin/fds")
@@ -28,10 +27,9 @@ public class FdsController {
 
     @GetMapping("/")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public List<FdsDTO> getFds() {
-       List<FicheSecuriteEntity> fds = fdsService.findAll();
-        List<FdsDTO> fdsDTOs = fds.stream().map(fiche -> fdsMapper.convertToDTO(fiche)).collect(Collectors.toList());
-        return fdsDTOs;
+    public List<FicheSecuriteProduitDTO> getFds() throws IOException {
+       List<FicheSecuriteProduitDTO> fds = fdsService.findAll();
+       return fds;
     }
 
     @PutMapping("/{ficheId}/updatestatut")

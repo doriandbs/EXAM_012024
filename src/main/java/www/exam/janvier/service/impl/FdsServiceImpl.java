@@ -2,8 +2,11 @@ package www.exam.janvier.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import www.exam.janvier.DTO.FicheSecuriteProduitDTO;
 import www.exam.janvier.entity.FicheSecuriteEntity;
+import www.exam.janvier.entity.ProduitEntity;
 import www.exam.janvier.repository.FicheSecuriteRepository;
+import www.exam.janvier.repository.ProduitRepository;
 import www.exam.janvier.service.FdsService;
 import www.exam.janvier.service.UtilisateurService;
 
@@ -12,12 +15,18 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class FdsServiceImpl implements FdsService {
     @Autowired
     private FicheSecuriteRepository ficheSecuriteRepo;
+
+    @Autowired
+    private ProduitRepository produitRepo;
 
     @Autowired
     private UtilisateurService utilisateurService;
@@ -40,10 +49,27 @@ public class FdsServiceImpl implements FdsService {
         }
     }
 
-    @Override
-    public List<FicheSecuriteEntity> findAll() {
+    public List<FicheSecuriteProduitDTO> findAll() throws IOException {
         List<FicheSecuriteEntity> list = ficheSecuriteRepo.findAll();
-        return list;
+        List<ProduitEntity> produitsAvecFiches = produitRepo.findProduitsWithFiches();
+
+        Map<Long, ProduitEntity> ficheToProduitMap = new HashMap<>();
+        for (ProduitEntity produit : produitsAvecFiches) {
+            for (FicheSecuriteEntity fiche : produit.getFichesSecurite()) {
+                ficheToProduitMap.put(fiche.getId(), produit);
+            }
+        }
+
+        List<FicheSecuriteProduitDTO> result = new ArrayList<>();
+        for (FicheSecuriteEntity fiche : list) {
+            ProduitEntity produit = ficheToProduitMap.get(fiche.getId());
+            String produitNom = produit != null ? produit.getNom() : null;
+            result.add(new FicheSecuriteProduitDTO(fiche, produitNom,convertPdf(fiche.getCheminPdf())));
+        }
+
+
+
+        return result;
     }
 
     @Override
