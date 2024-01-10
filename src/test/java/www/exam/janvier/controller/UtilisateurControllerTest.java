@@ -13,12 +13,12 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import www.exam.janvier.dto.RegisterDTO;
-import www.exam.janvier.dto.UtilisateurDTO;
+import www.exam.janvier.dto.SocieteDTO;
 import www.exam.janvier.entity.RoleEntity;
-import www.exam.janvier.entity.UtilisateurEntity;
-import www.exam.janvier.mapper.UtilisateurMapper;
+import www.exam.janvier.entity.SocieteEntity;
+import www.exam.janvier.mapper.SocieteMapper;
 import www.exam.janvier.service.RoleService;
-import www.exam.janvier.service.UtilisateurService;
+import www.exam.janvier.service.SocieteService;
 
 import java.util.List;
 
@@ -29,12 +29,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class UtilisateurControllerTest {
+class SocieteControllerTest {
 
     private MockMvc mockMvc;
 
     @Mock
-    private UtilisateurService utilisateurService;
+    private SocieteService societeService;
 
     @Mock
     private RoleService roleService;
@@ -43,21 +43,21 @@ class UtilisateurControllerTest {
     private PasswordEncoder passwordEncoder;
 
     @Mock
-    private UtilisateurMapper utilisateurMapper;
+    private SocieteMapper societeMapper;
 
     @InjectMocks
-    private UtilisateurController utilisateurController;
+    private SocieteController societeController;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(utilisateurController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(societeController).build();
     }
 
     @Test
     void testAddClient_Success() throws Exception {
         RegisterDTO registerDTO = new RegisterDTO("societe", "password", "email@example.com");
-        when(utilisateurService.existByNomSociete(registerDTO.getNomsociete())).thenReturn(false);
+        when(societeService.existByNomSociete(registerDTO.getNomsociete())).thenReturn(false);
         when(roleService.findByName("ROLE_CLIENT")).thenReturn(new RoleEntity());
         when(passwordEncoder.encode(registerDTO.getPassword())).thenReturn("encodedPassword");
 
@@ -65,27 +65,27 @@ class UtilisateurControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(registerDTO)))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Utilisateur enregistré"));
+                .andExpect(content().string("Société enregistrée"));
     }
 
     @Test
     void testAddClient_UserAlreadyExists() throws Exception {
         RegisterDTO registerDTO = new RegisterDTO("societe", "password", "email@example.com");
-        when(utilisateurService.existByNomSociete(registerDTO.getNomsociete())).thenReturn(true);
+        when(societeService.existByNomSociete(registerDTO.getNomsociete())).thenReturn(true);
 
         mockMvc.perform(post("/admin/users/addClient")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(registerDTO)))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Utilisateur déjà enregistré"));
+                .andExpect(content().string("Socitété déjà enregistré"));
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     void testGetAll_Clients() throws Exception {
-        List<UtilisateurEntity> clients = List.of(new UtilisateurEntity());
-        when(utilisateurService.findAllByRole("ROLE_CLIENT")).thenReturn(clients);
-        when(utilisateurMapper.convertToDTO(any(UtilisateurEntity.class))).thenReturn(new UtilisateurDTO());
+        List<SocieteEntity> clients = List.of(new SocieteEntity());
+        when(societeService.findAllByRole("ROLE_CLIENT")).thenReturn(clients);
+        when(societeMapper.convertToDTO(any(SocieteEntity.class))).thenReturn(new SocieteDTO());
 
         mockMvc.perform(get("/admin/users/clients"))
                 .andExpect(status().isOk())

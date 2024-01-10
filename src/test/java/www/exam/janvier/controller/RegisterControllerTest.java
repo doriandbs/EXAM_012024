@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import www.exam.janvier.dto.RegisterDTO;
 import www.exam.janvier.entity.RoleEntity;
 import www.exam.janvier.service.RoleService;
-import www.exam.janvier.service.UtilisateurService;
+import www.exam.janvier.service.SocieteService;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -26,7 +26,7 @@ class RegisterControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private UtilisateurService utilisateurService;
+    private SocieteService societeService;
 
     @Mock
     private RoleService roleService;
@@ -45,8 +45,8 @@ class RegisterControllerTest {
 
     @Test
     void testRegister_Success() throws Exception {
-        RegisterDTO registerDTO = new RegisterDTO("societe", "password", "email@example.com");
-        when(utilisateurService.existByNomSociete(registerDTO.getNomsociete())).thenReturn(false);
+        RegisterDTO registerDTO = new RegisterDTO("societe", "password", "test@gmail.com");
+        when(societeService.existByNomSociete(registerDTO.getNomsociete())).thenReturn(false);
         when(roleService.findByName("ROLE_CLIENT")).thenReturn(new RoleEntity());
         when(passwordEncoder.encode(registerDTO.getPassword())).thenReturn("encodedPassword");
 
@@ -54,18 +54,18 @@ class RegisterControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(registerDTO)))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Utilisateur enregistré"));
+                .andExpect(content().string("Société enregistrée"));
     }
 
     @Test
     void testRegister_UserAlreadyExists() throws Exception {
-        RegisterDTO registerDTO = new RegisterDTO("societe", "password", "email@example.com");
-        when(utilisateurService.existByNomSociete(registerDTO.getNomsociete())).thenReturn(true);
+        RegisterDTO registerDTO = new RegisterDTO("societe", "password", "test@gmail.com");
+        when(societeService.existByNomSociete(registerDTO.getNomsociete())).thenReturn(true);
 
         mockMvc.perform(post("/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(registerDTO)))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Utilisateur déjà enregistré"));
+                .andExpect(content().string("Société déjà enregistrée"));
     }
 }

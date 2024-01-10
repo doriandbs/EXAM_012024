@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UtilisateurDTO {
+public class SocieteDTO {
     String nomsociete;
     List<ProduitDTO> produits;
 }

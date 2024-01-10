@@ -7,21 +7,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import www.exam.janvier.entity.UtilisateurEntity;
-import www.exam.janvier.repository.UtilisateurRepository;
+import www.exam.janvier.entity.SocieteEntity;
+import www.exam.janvier.repository.SocieteRepository;
 
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UtilisateurRepository utilisateurRepo;
+    private final SocieteRepository societeRepo;
     @Autowired
-    public CustomUserDetailsService(UtilisateurRepository utilisateurRepository) {
-        this.utilisateurRepo=utilisateurRepository;
+    public CustomUserDetailsService(SocieteRepository societeRepository) {
+        this.societeRepo=societeRepository;
     }
     @Override
     public UserDetails loadUserByUsername(String nomSociete) throws UsernameNotFoundException {
-        UtilisateurEntity user = utilisateurRepo.findByNomSociete(nomSociete);
+        SocieteEntity user = societeRepo.findByNomSociete(nomSociete);
         return new User(user.getNomSociete(),user.getPassword(),  user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName())).toList());
     }

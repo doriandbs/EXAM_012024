@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.*;
 import www.exam.janvier.dto.FicheSecuriteProduitDTO;
 import www.exam.janvier.dto.ProduitDTO;
 import www.exam.janvier.entity.ProduitEntity;
-import www.exam.janvier.entity.UtilisateurEntity;
+import www.exam.janvier.entity.SocieteEntity;
 import www.exam.janvier.mapper.ProduitMapper;
 import www.exam.janvier.service.ProduitService;
-import www.exam.janvier.service.UtilisateurService;
+import www.exam.janvier.service.SocieteService;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,24 +22,24 @@ import java.util.Set;
 public class ProduitController {
 
     private final ProduitService produitService;
-    private final UtilisateurService utilisateurService;
+    private final SocieteService societeService;
     private final ProduitMapper produitMapper;
 
     @Autowired
-    public ProduitController(ProduitService produitService, UtilisateurService utilisateurService, ProduitMapper produitMapper) {
+    public ProduitController(ProduitService produitService, SocieteService societeService, ProduitMapper produitMapper) {
         this.produitService = produitService;
-        this.utilisateurService= utilisateurService;
+        this.societeService= societeService;
         this.produitMapper=produitMapper;
     }
     @GetMapping("/user/produits")
     public ResponseEntity<List<ProduitDTO>> getProduitsForUser() {
         String societeActive = SecurityContextHolder.getContext().getAuthentication().getName();
-        Optional<UtilisateurEntity> userOpt = Optional.ofNullable(utilisateurService.findByNomSociete(societeActive));
+        Optional<SocieteEntity> userOpt = Optional.ofNullable(societeService.findByNomSociete(societeActive));
         if (userOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        UtilisateurEntity user = userOpt.get();
+        SocieteEntity user = userOpt.get();
         Set<ProduitEntity> produits = user.getProduits();
 
         List<ProduitDTO> produitDTOs = produits.stream().map(produitMapper::convertToDTO).toList();

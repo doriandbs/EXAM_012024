@@ -18,10 +18,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import www.exam.janvier.dto.FicheSecuriteProduitDTO;
 import www.exam.janvier.dto.ProduitDTO;
 import www.exam.janvier.entity.ProduitEntity;
-import www.exam.janvier.entity.UtilisateurEntity;
+import www.exam.janvier.entity.SocieteEntity;
 import www.exam.janvier.mapper.ProduitMapper;
 import www.exam.janvier.service.ProduitService;
-import www.exam.janvier.service.UtilisateurService;
+import www.exam.janvier.service.SocieteService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,7 +42,7 @@ class ProduitControllerTest {
     private ProduitService produitService;
 
     @Mock
-    private UtilisateurService utilisateurService;
+    private SocieteService societeService;
 
     @Mock
     private ProduitMapper produitMapper;
@@ -59,10 +59,10 @@ class ProduitControllerTest {
     @Test
     void testGetProduitsForUser_Success() throws Exception {
         String societeActive = "societe1";
-        UtilisateurEntity user = new UtilisateurEntity();
+        SocieteEntity user = new SocieteEntity();
         user.setProduits(Set.of(new ProduitEntity()));
 
-        when(utilisateurService.findByNomSociete(societeActive)).thenReturn(user);
+        when(societeService.findByNomSociete(societeActive)).thenReturn(user);
         when(produitMapper.convertToDTO(any(ProduitEntity.class))).thenReturn(new ProduitDTO());
 
         Authentication auth = new UsernamePasswordAuthenticationToken(societeActive, "password");
@@ -78,7 +78,7 @@ class ProduitControllerTest {
     @Test
     void testGetProduitsForUser_UserNotFound() throws Exception {
         String societeActive = "nonExistingUser";
-        when(utilisateurService.findByNomSociete(societeActive)).thenReturn(null);
+        when(societeService.findByNomSociete(societeActive)).thenReturn(null);
 
         Authentication auth = new UsernamePasswordAuthenticationToken(societeActive, "password");
         SecurityContext securityContext = mock(SecurityContext.class);

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import www.exam.janvier.dto.FicheSecuriteProduitDTO;
 import www.exam.janvier.mapper.FdsMapper;
 import www.exam.janvier.service.FdsService;
-import www.exam.janvier.service.UtilisateurService;
+import www.exam.janvier.service.SocieteService;
 
 import java.io.IOException;
 import java.util.List;
@@ -21,7 +21,7 @@ public class FdsController {
     private final FdsService fdsService;
 
     @Autowired
-    public FdsController(FdsService fdsService, UtilisateurService utilisateurService, FdsMapper fdsMapper) {
+    public FdsController(FdsService fdsService, SocieteService societeService, FdsMapper fdsMapper) {
         this.fdsService = fdsService;
     }
 

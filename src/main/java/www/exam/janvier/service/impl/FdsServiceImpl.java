@@ -5,12 +5,12 @@ import org.springframework.stereotype.Service;
 import www.exam.janvier.dto.FicheSecuriteProduitDTO;
 import www.exam.janvier.entity.FicheSecuriteEntity;
 import www.exam.janvier.entity.ProduitEntity;
-import www.exam.janvier.entity.UtilisateurEntity;
+import www.exam.janvier.entity.SocieteEntity;
 import www.exam.janvier.repository.FicheSecuriteRepository;
 import www.exam.janvier.repository.ProduitRepository;
 import www.exam.janvier.service.FdsService;
 import www.exam.janvier.service.NotificationService;
-import www.exam.janvier.service.UtilisateurService;
+import www.exam.janvier.service.SocieteService;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -27,14 +27,14 @@ public class FdsServiceImpl implements FdsService {
 
     private final FicheSecuriteRepository ficheSecuriteRepo;
     private final ProduitRepository produitRepo;
-    private final UtilisateurService utilisateurService;
+    private final SocieteService societeService;
     private final NotificationService notificationService;
 
     @Autowired
-    public FdsServiceImpl(FicheSecuriteRepository ficheSecuriteRepo, ProduitRepository produitRepo, UtilisateurService utilisateurService, NotificationService notificationService){
+    public FdsServiceImpl(FicheSecuriteRepository ficheSecuriteRepo, ProduitRepository produitRepo, SocieteService societeService, NotificationService notificationService){
         this.ficheSecuriteRepo=ficheSecuriteRepo;
         this.produitRepo=produitRepo;
-        this.utilisateurService=utilisateurService;
+        this.societeService=societeService;
         this.notificationService=notificationService;
     }
 
@@ -90,11 +90,11 @@ public class FdsServiceImpl implements FdsService {
         if ("inactive".equals(nouveauStatut)) {
             List<ProduitEntity> produits = produitRepo.findByFicheId(ficheId);
             for (ProduitEntity produit : produits) {
-                List<UtilisateurEntity> utilisateurs = utilisateurService.findByProductId(produit.getId());
-                for (UtilisateurEntity utilisateur : utilisateurs) {
-                    if (utilisateur.getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_CLIENT"))) {
+                List<SocieteEntity> societes = societeService.findByProductId(produit.getId());
+                for (SocieteEntity societe : societes) {
+                    if (societe.getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_CLIENT"))) {
                         notificationService.sendNotificationEmail(
-                                utilisateur.getMail(),
+                                societe.getMail(),
                                 "Mise à jour de la Fiche de Sécurité",
                                 "La fiche de sécurité "+ fiche.getName() + " du produit " + produit.getNom() + " a été mise à jour."
                         );
