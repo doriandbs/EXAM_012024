@@ -12,6 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UtilisateurDTO {
-    String username;
+    String nomsociete;
     List<ProduitDTO> produits;
 }

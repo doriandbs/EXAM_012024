@@ -13,7 +13,7 @@ public class UtilisateurMapper {
     private ProduitMapper produitMapper;
     public UtilisateurDTO convertToDTO(UtilisateurEntity utilisateur) {
         UtilisateurDTO utilisateurDTO = new UtilisateurDTO();
-        utilisateurDTO.setUsername(utilisateur.getUsername());
+        utilisateurDTO.setNomsociete(utilisateur.getNomSociete());
         utilisateurDTO.setProduits(utilisateur.getProduits().stream()
                 .map(produit -> produitMapper.convertToDTO(produit))
                 .collect(Collectors.toList()));

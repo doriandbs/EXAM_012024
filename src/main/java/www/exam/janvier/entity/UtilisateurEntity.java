@@ -16,7 +16,7 @@ public class UtilisateurEntity {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String username;
+    private String nomSociete;
 
     @Column(nullable = false)
     private String password;

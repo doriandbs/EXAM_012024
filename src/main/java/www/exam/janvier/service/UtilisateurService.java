@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UtilisateurService {
-    boolean existByUsername(String username);
+    boolean existByNomSociete(String nomSociete);
     UtilisateurEntity save(UtilisateurEntity entity);
-    UtilisateurEntity findByUsername(String username);
+    UtilisateurEntity findByNomSociete(String nomSociete);
     Optional<UtilisateurEntity> findById(Long id);
     List<UtilisateurEntity> findAllByRole(String roleName);
 

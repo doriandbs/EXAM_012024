@@ -15,16 +15,16 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     @Autowired
     UtilisateurRepository utilisateurRepo;
 
-    public boolean existByUsername(String username){
-        return utilisateurRepo.existsByUsername(username);
+    public boolean existByNomSociete(String nomSociete){
+        return utilisateurRepo.existsByNomSociete(nomSociete);
     }
 
     public UtilisateurEntity save(UtilisateurEntity utilisateurEntity){
         return utilisateurRepo.save(utilisateurEntity);
     }
 
-    public UtilisateurEntity findByUsername(String username){
-        return utilisateurRepo.findByUsername(username);
+    public UtilisateurEntity findByNomSociete(String nomSociete){
+        return utilisateurRepo.findByNomSociete(nomSociete);
     }
 
     @Override

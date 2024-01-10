@@ -22,7 +22,7 @@ public class JwtUtil {
     @Value("${secret.jwt}")
     public String secret;
 
-    public String extractUsername(String token) {
+    public String extractNomSociete(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -49,8 +49,8 @@ public class JwtUtil {
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        final String nomSociete = extractNomSociete(token);
+        return (nomSociete.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
     public String generateToken(String userName){

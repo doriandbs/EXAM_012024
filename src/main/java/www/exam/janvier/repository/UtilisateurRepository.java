@@ -9,9 +9,9 @@ import java.util.List;
 
 @Repository
 public interface UtilisateurRepository extends JpaRepository<UtilisateurEntity,Long> {
-   UtilisateurEntity findByUsername(String userName);
+   UtilisateurEntity findByNomSociete(String nomSociete);
 
-    boolean existsByUsername(String username);
+    boolean existsByNomSociete(String nomSociete);
 
     @Query("SELECT u FROM UtilisateurEntity u JOIN u.roles r WHERE r.name = :roleName")
     List<UtilisateurEntity> findByRole(String roleName);

@@ -25,16 +25,17 @@ public class RegisterController {
     private PasswordEncoder passwordEncoder;
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterDTO registerDTO) {
-        if(utilisateurService.existByUsername(registerDTO.getUsername())) {
+        if(utilisateurService.existByNomSociete(registerDTO.getNomsociete())) {
             return ResponseEntity.badRequest().body("User already registered");
         }
 
         UtilisateurEntity newUtilisateur = new UtilisateurEntity();
-        newUtilisateur.setUsername(registerDTO.getUsername());
+        newUtilisateur.setNomSociete(registerDTO.getNomsociete());
         RoleEntity clientRole = roleService.findByName("ROLE_CLIENT");
 
         newUtilisateur.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
         newUtilisateur.setRoles(Collections.singleton(clientRole));
+        newUtilisateur.setMail(registerDTO.getMail());
         UtilisateurEntity userSaved = utilisateurService.save(newUtilisateur);
 
         return ResponseEntity.ok(userSaved);

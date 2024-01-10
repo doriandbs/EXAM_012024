@@ -1,9 +1,9 @@
 package www.exam.janvier.DTO;
 
-import lombok.*;
+import lombok.Data;
 
 @Data
 public class LoginDTO{
-    private String username;
+    private String nomsociete;
     private String password;
 }

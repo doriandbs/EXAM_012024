@@ -18,9 +18,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UtilisateurRepository utilisateurRepo;
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UtilisateurEntity user = utilisateurRepo.findByUsername(username);
-        return new User(user.getUsername(),user.getPassword(),  user.getRoles().stream()
+    public UserDetails loadUserByUsername(String nomSociete) throws UsernameNotFoundException {
+        UtilisateurEntity user = utilisateurRepo.findByNomSociete(nomSociete);
+        return new User(user.getNomSociete(),user.getPassword(),  user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toList()));
     }

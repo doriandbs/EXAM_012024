@@ -27,7 +27,7 @@ public class LoginController {
     public AuthenticationResponseDTO authentication(@RequestBody LoginDTO loginDTO) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginDTO.getUsername(),
+                        loginDTO.getNomsociete(),
                            loginDTO.getPassword()
              )
         );

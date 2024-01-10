@@ -34,8 +34,8 @@ public class ProduitController {
     private ProduitMapper produitMapper;
     @GetMapping("/user/produits")
     public ResponseEntity<List<ProduitDTO>> getProduitsForUser() {
-        String userActif = SecurityContextHolder.getContext().getAuthentication().getName();
-        Optional<UtilisateurEntity> userOpt = Optional.ofNullable(utilisateurService.findByUsername(userActif));
+        String societeActive = SecurityContextHolder.getContext().getAuthentication().getName();
+        Optional<UtilisateurEntity> userOpt = Optional.ofNullable(utilisateurService.findByNomSociete(societeActive));
         if (!userOpt.isPresent()) {
             return ResponseEntity.notFound().build();
         }

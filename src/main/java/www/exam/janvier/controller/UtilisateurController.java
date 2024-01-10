@@ -34,12 +34,12 @@ public class UtilisateurController {
 
     @PostMapping("/addClient")
     public ResponseEntity<?> addClient(@RequestBody RegisterDTO registerDTO) {
-        if(utilisateurService.existByUsername(registerDTO.getUsername())) {
+        if(utilisateurService.existByNomSociete(registerDTO.getNomsociete())) {
             return ResponseEntity.badRequest().body("User already registered");
         }
 
         UtilisateurEntity newUtilisateur = new UtilisateurEntity();
-        newUtilisateur.setUsername(registerDTO.getUsername());
+        newUtilisateur.setNomSociete(registerDTO.getNomsociete());
         RoleEntity clientRole = roleService.findByName("ROLE_CLIENT");
 
         newUtilisateur.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
