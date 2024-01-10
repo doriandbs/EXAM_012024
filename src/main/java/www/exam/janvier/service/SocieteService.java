@@ -10,7 +10,7 @@ public interface SocieteService {
     SocieteEntity save(SocieteEntity entity);
     SocieteEntity findByNomSociete(String nomSociete);
     Optional<SocieteEntity> findById(Long id);
-    List<SocieteEntity> findAllByRole(String roleName);
+    List<SocieteEntity> findAllWithProductsByRole(String roleName);
 
     List<SocieteEntity> findByProductId(Long id);
 

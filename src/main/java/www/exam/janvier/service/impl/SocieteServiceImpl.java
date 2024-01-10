@@ -35,8 +35,11 @@ public class SocieteServiceImpl implements SocieteService {
         return societeRepo.findById(id);
     }
 
-    public List<SocieteEntity> findAllByRole(String roleName) {
-        return societeRepo.findByRole(roleName);
+    public List<SocieteEntity> findAllWithProductsByRole(String roleName) {
+        List<SocieteEntity> listSociete= societeRepo.findByRole(roleName);
+        return listSociete.stream()
+                .filter(societe -> societe.getProduits() != null
+                        && !societe.getProduits().isEmpty()).toList();
     }
 
     @Override

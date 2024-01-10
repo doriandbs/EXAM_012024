@@ -84,7 +84,7 @@ class SocieteControllerTest {
     @WithMockUser(roles = "ADMIN")
     void testGetAll_Clients() throws Exception {
         List<SocieteEntity> clients = List.of(new SocieteEntity());
-        when(societeService.findAllByRole("ROLE_CLIENT")).thenReturn(clients);
+        when(societeService.findAllWithProductsByRole("ROLE_CLIENT")).thenReturn(clients);
         when(societeMapper.convertToDTO(any(SocieteEntity.class))).thenReturn(new SocieteDTO());
 
         mockMvc.perform(get("/admin/societes/clients"))

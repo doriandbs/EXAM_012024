@@ -52,9 +52,9 @@ public class SocieteController {
 
     @GetMapping("/clients")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<List<SocieteDTO>> getAll() {
-        List<SocieteEntity> clients = societeService.findAllByRole("ROLE_CLIENT");
-        List<SocieteDTO> clientDTOs = clients.stream()
+    public ResponseEntity<List<SocieteDTO>> getAllClientWithProduct() {
+        List<SocieteEntity> clientsWithProduct = societeService.findAllWithProductsByRole("ROLE_CLIENT");
+        List<SocieteDTO> clientDTOs = clientsWithProduct.stream()
                 .map(societeMapper::convertToDTO).toList();
         return ResponseEntity.ok(clientDTOs);
     }
