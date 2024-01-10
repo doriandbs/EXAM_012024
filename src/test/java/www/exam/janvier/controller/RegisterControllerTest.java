@@ -58,7 +58,7 @@ class RegisterControllerTest {
     }
 
     @Test
-    void testRegister_UserAlreadyExists() throws Exception {
+    void testRegister_SocieteAlreadyExists() throws Exception {
         RegisterDTO registerDTO = new RegisterDTO("societe", "password", "test@gmail.com");
         when(societeService.existByNomSociete(registerDTO.getNomsociete())).thenReturn(true);
 

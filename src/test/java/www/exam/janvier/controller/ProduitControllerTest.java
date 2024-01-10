@@ -57,12 +57,12 @@ class ProduitControllerTest {
     }
 
     @Test
-    void testGetProduitsForUser_Success() throws Exception {
+    void testgetProduitsForSociete_Success() throws Exception {
         String societeActive = "societe1";
-        SocieteEntity user = new SocieteEntity();
-        user.setProduits(Set.of(new ProduitEntity()));
+        SocieteEntity societe = new SocieteEntity();
+        societe.setProduits(Set.of(new ProduitEntity()));
 
-        when(societeService.findByNomSociete(societeActive)).thenReturn(user);
+        when(societeService.findByNomSociete(societeActive)).thenReturn(societe);
         when(produitMapper.convertToDTO(any(ProduitEntity.class))).thenReturn(new ProduitDTO());
 
         Authentication auth = new UsernamePasswordAuthenticationToken(societeActive, "password");
@@ -70,14 +70,14 @@ class ProduitControllerTest {
         SecurityContextHolder.setContext(securityContext);
         when(securityContext.getAuthentication()).thenReturn(auth);
 
-        mockMvc.perform(get("/produits/user/produits"))
+        mockMvc.perform(get("/produits/societe/produits"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
-    void testGetProduitsForUser_UserNotFound() throws Exception {
-        String societeActive = "nonExistingUser";
+    void testgetProduitsForSociete_UserNotFound() throws Exception {
+        String societeActive = "nonExistante";
         when(societeService.findByNomSociete(societeActive)).thenReturn(null);
 
         Authentication auth = new UsernamePasswordAuthenticationToken(societeActive, "password");
@@ -85,7 +85,7 @@ class ProduitControllerTest {
         SecurityContextHolder.setContext(securityContext);
         when(securityContext.getAuthentication()).thenReturn(auth);
 
-        mockMvc.perform(get("/produits/user/produits"))
+        mockMvc.perform(get("/produits/societe/produits"))
                 .andExpect(status().isNotFound());
     }
 

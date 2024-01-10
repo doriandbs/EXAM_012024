@@ -61,7 +61,7 @@ class SocieteControllerTest {
         when(roleService.findByName("ROLE_CLIENT")).thenReturn(new RoleEntity());
         when(passwordEncoder.encode(registerDTO.getPassword())).thenReturn("encodedPassword");
 
-        mockMvc.perform(post("/admin/users/addClient")
+        mockMvc.perform(post("/admin/societes/addClient")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(registerDTO)))
                 .andExpect(status().isOk())
@@ -69,15 +69,15 @@ class SocieteControllerTest {
     }
 
     @Test
-    void testAddClient_UserAlreadyExists() throws Exception {
+    void testAddClient_SocieteAlreadyExists() throws Exception {
         RegisterDTO registerDTO = new RegisterDTO("societe", "password", "email@example.com");
         when(societeService.existByNomSociete(registerDTO.getNomsociete())).thenReturn(true);
 
-        mockMvc.perform(post("/admin/users/addClient")
+        mockMvc.perform(post("/admin/societes/addClient")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(registerDTO)))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Socitété déjà enregistré"));
+                .andExpect(content().string("Société déjà enregistré"));
     }
 
     @Test
@@ -87,7 +87,7 @@ class SocieteControllerTest {
         when(societeService.findAllByRole("ROLE_CLIENT")).thenReturn(clients);
         when(societeMapper.convertToDTO(any(SocieteEntity.class))).thenReturn(new SocieteDTO());
 
-        mockMvc.perform(get("/admin/users/clients"))
+        mockMvc.perform(get("/admin/societes/clients"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)));
     }

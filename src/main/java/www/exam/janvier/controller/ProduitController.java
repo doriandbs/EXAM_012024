@@ -31,16 +31,16 @@ public class ProduitController {
         this.societeService= societeService;
         this.produitMapper=produitMapper;
     }
-    @GetMapping("/user/produits")
-    public ResponseEntity<List<ProduitDTO>> getProduitsForUser() {
+    @GetMapping("/societe/produits")
+    public ResponseEntity<List<ProduitDTO>> getProduitsForSociete() {
         String societeActive = SecurityContextHolder.getContext().getAuthentication().getName();
-        Optional<SocieteEntity> userOpt = Optional.ofNullable(societeService.findByNomSociete(societeActive));
-        if (userOpt.isEmpty()) {
+        Optional<SocieteEntity> societeOpt = Optional.ofNullable(societeService.findByNomSociete(societeActive));
+        if (societeOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        SocieteEntity user = userOpt.get();
-        Set<ProduitEntity> produits = user.getProduits();
+        SocieteEntity societe = societeOpt.get();
+        Set<ProduitEntity> produits = societe.getProduits();
 
         List<ProduitDTO> produitDTOs = produits.stream().map(produitMapper::convertToDTO).toList();
 

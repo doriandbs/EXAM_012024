@@ -8,5 +8,5 @@ import org.springframework.security.core.userdetails.UserDetails;
 @AllArgsConstructor
 public class AuthenticationResponseDTO {
     private String jwt;
-    private UserDetails user;
+    private UserDetails societe;
 }
