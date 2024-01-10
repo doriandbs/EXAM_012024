@@ -9,8 +9,10 @@ import java.time.LocalDate;
 @Setter
 public class FdsDTO {
     private Long id;
+    private String nom;
     private String cheminPdf;
     private String statut;
     private LocalDate dateCreation;
     private LocalDate dateMaj;
+    private byte[] pdfContent;
 }
