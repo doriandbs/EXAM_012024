@@ -8,9 +8,11 @@ import www.exam.janvier.service.RoleService;
 
 @Service
 public class RoleServiceImpl implements RoleService {
-    @Autowired
     RoleRepository roleRepo;
-
+    @Autowired
+    public RoleServiceImpl(RoleRepository roleRepo){
+        this.roleRepo=roleRepo;
+    }
     @Override
     public RoleEntity findByName(String name) {
         return roleRepo.findByName(name);

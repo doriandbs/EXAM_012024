@@ -12,8 +12,11 @@ import java.util.Optional;
 @Service
 public class UtilisateurServiceImpl implements UtilisateurService {
 
-    @Autowired
     UtilisateurRepository utilisateurRepo;
+    @Autowired
+    public UtilisateurServiceImpl(UtilisateurRepository utilisateurRepo){
+        this.utilisateurRepo = utilisateurRepo;
+    }
 
     public boolean existByNomSociete(String nomSociete){
         return utilisateurRepo.existsByNomSociete(nomSociete);
