@@ -1,6 +1,6 @@
 package www.exam.janvier.service;
 
-import www.exam.janvier.DTO.FicheSecuriteProduitDTO;
+import www.exam.janvier.dto.FicheSecuriteProduitDTO;
 
 import java.io.IOException;
 import java.util.List;

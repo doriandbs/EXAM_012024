@@ -5,8 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import www.exam.janvier.DTO.RegisterDTO;
-import www.exam.janvier.DTO.UtilisateurDTO;
+import www.exam.janvier.dto.RegisterDTO;
+import www.exam.janvier.dto.UtilisateurDTO;
 import www.exam.janvier.entity.RoleEntity;
 import www.exam.janvier.entity.UtilisateurEntity;
 import www.exam.janvier.mapper.UtilisateurMapper;
@@ -15,27 +15,28 @@ import www.exam.janvier.service.UtilisateurService;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/admin/users")
 public class UtilisateurController {
 
-    @Autowired
     private UtilisateurService utilisateurService;
-
-    @Autowired
     private RoleService roleService;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
     private UtilisateurMapper utilisateurMapper;
 
+    @Autowired
+    public UtilisateurController(RoleService roleService, UtilisateurService utilisateurService, PasswordEncoder passwordEncoder,UtilisateurMapper utilisateurMapper) {
+        this.roleService = roleService;
+        this.utilisateurService= utilisateurService;
+        this.passwordEncoder=passwordEncoder;
+        this.utilisateurMapper=utilisateurMapper;
+    }
+
     @PostMapping("/addClient")
-    public ResponseEntity<?> addClient(@RequestBody RegisterDTO registerDTO) {
+    public ResponseEntity<String> addClient(@RequestBody RegisterDTO registerDTO) {
         if(utilisateurService.existByNomSociete(registerDTO.getNomsociete())) {
-            return ResponseEntity.badRequest().body("User already registered");
+            return ResponseEntity.badRequest().body("Utilisateur déjà enregistré");
         }
 
         UtilisateurEntity newUtilisateur = new UtilisateurEntity();
@@ -45,9 +46,8 @@ public class UtilisateurController {
         newUtilisateur.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
         newUtilisateur.setRoles(Collections.singleton(clientRole));
         newUtilisateur.setMail(registerDTO.getMail());
-        UtilisateurEntity userSaved = utilisateurService.save(newUtilisateur);
-
-        return ResponseEntity.ok(userSaved);
+        utilisateurService.save(newUtilisateur);
+        return ResponseEntity.ok("Utilisateur enregistré");
     }
 
     @GetMapping("/clients")
@@ -55,8 +55,7 @@ public class UtilisateurController {
     public ResponseEntity<List<UtilisateurDTO>> getAll() {
         List<UtilisateurEntity> clients = utilisateurService.findAllByRole("ROLE_CLIENT");
         List<UtilisateurDTO> clientDTOs = clients.stream()
-                .map(utilisateur -> utilisateurMapper.convertToDTO(utilisateur))
-                .collect(Collectors.toList());
+                .map(utilisateur -> utilisateurMapper.convertToDTO(utilisateur)).toList();
         return ResponseEntity.ok(clientDTOs);
     }
 

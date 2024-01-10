@@ -2,7 +2,7 @@ package www.exam.janvier.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import www.exam.janvier.DTO.FicheSecuriteProduitDTO;
+import www.exam.janvier.dto.FicheSecuriteProduitDTO;
 import www.exam.janvier.entity.FicheSecuriteEntity;
 import www.exam.janvier.entity.ProduitEntity;
 import www.exam.janvier.entity.UtilisateurEntity;
@@ -24,18 +24,19 @@ import java.util.Map;
 
 @Service
 public class FdsServiceImpl implements FdsService {
-    @Autowired
-    private FicheSecuriteRepository ficheSecuriteRepo;
+
+    private final FicheSecuriteRepository ficheSecuriteRepo;
+    private final ProduitRepository produitRepo;
+    private final UtilisateurService utilisateurService;
+    private final NotificationService notificationService;
 
     @Autowired
-    private ProduitRepository produitRepo;
-
-    @Autowired
-    private UtilisateurService utilisateurService;
-
-    @Autowired
-    private NotificationService notificationService;
-
+    public FdsServiceImpl(FicheSecuriteRepository ficheSecuriteRepo, ProduitRepository produitRepo, UtilisateurService utilisateurService, NotificationService notificationService){
+        this.ficheSecuriteRepo=ficheSecuriteRepo;
+        this.produitRepo=produitRepo;
+        this.utilisateurService=utilisateurService;
+        this.notificationService=notificationService;
+    }
 
 
 

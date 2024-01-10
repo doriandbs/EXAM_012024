@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import www.exam.janvier.DTO.FicheSecuriteProduitDTO;
+import www.exam.janvier.dto.FicheSecuriteProduitDTO;
 import www.exam.janvier.mapper.FdsMapper;
 import www.exam.janvier.service.FdsService;
 import www.exam.janvier.service.UtilisateurService;
@@ -18,23 +18,22 @@ import java.util.Map;
 @RequestMapping("/admin/fds")
 public class FdsController {
 
+    private final FdsService fdsService;
+
     @Autowired
-    private FdsService fdsService;
-    @Autowired
-    private UtilisateurService utilisateurService;
-    @Autowired
-    private FdsMapper fdsMapper;
+    public FdsController(FdsService fdsService, UtilisateurService utilisateurService, FdsMapper fdsMapper) {
+        this.fdsService = fdsService;
+    }
 
     @GetMapping("/")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<FicheSecuriteProduitDTO> getFds() throws IOException {
-       List<FicheSecuriteProduitDTO> fds = fdsService.findAll();
-       return fds;
+       return fdsService.findAll();
     }
 
     @PutMapping("/{ficheId}/updatestatut")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> updateStatutFiche(@PathVariable Long ficheId, @RequestBody Map<String, String> statut) {
+    public ResponseEntity<String> updateStatutFiche(@PathVariable Long ficheId, @RequestBody Map<String, String> statut) {
         try {
             fdsService.updateStatut(ficheId, statut.get("statut"));
             return ResponseEntity.ok().build();

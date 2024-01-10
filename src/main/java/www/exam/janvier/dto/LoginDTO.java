@@ -1,4 +1,4 @@
-package www.exam.janvier.DTO;
+package www.exam.janvier.dto;
 
 import lombok.Data;
 

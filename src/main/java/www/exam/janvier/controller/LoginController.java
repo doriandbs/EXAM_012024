@@ -9,18 +9,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import www.exam.janvier.DTO.AuthenticationResponseDTO;
-import www.exam.janvier.DTO.LoginDTO;
+import www.exam.janvier.dto.AuthenticationResponseDTO;
+import www.exam.janvier.dto.LoginDTO;
 import www.exam.janvier.utils.JwtUtil;
 
 @RestController
 public class LoginController {
 
-    @Autowired
     private AuthenticationManager authenticationManager;
 
-    @Autowired
     private JwtUtil jwtUtil;
+    @Autowired
+    public LoginController(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
+    }
 
 
     @PostMapping("/login")

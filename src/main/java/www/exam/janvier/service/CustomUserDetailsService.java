@@ -10,18 +10,19 @@ import org.springframework.stereotype.Service;
 import www.exam.janvier.entity.UtilisateurEntity;
 import www.exam.janvier.repository.UtilisateurRepository;
 
-import java.util.stream.Collectors;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
+    private final UtilisateurRepository utilisateurRepo;
     @Autowired
-    private UtilisateurRepository utilisateurRepo;
+    public CustomUserDetailsService(UtilisateurRepository utilisateurRepository) {
+        this.utilisateurRepo=utilisateurRepository;
+    }
     @Override
     public UserDetails loadUserByUsername(String nomSociete) throws UsernameNotFoundException {
         UtilisateurEntity user = utilisateurRepo.findByNomSociete(nomSociete);
         return new User(user.getNomSociete(),user.getPassword(),  user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
-                .collect(Collectors.toList()));
+                .map(role -> new SimpleGrantedAuthority(role.getName())).toList());
     }
 }

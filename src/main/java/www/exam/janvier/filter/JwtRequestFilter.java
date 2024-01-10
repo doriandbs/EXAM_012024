@@ -21,12 +21,15 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
 
-
-    @Autowired
     private CustomUserDetailsService userDetailsService;
+    private JwtUtil jwtUtil;
 
     @Autowired
-    private JwtUtil jwtUtil;
+    public JwtRequestFilter(JwtUtil jwtUtil, CustomUserDetailsService userDetailsService) {
+        this.jwtUtil = jwtUtil;
+        this.userDetailsService= userDetailsService;
+
+    }
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String requestURI = request.getRequestURI();

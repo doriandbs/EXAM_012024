@@ -1,8 +1,7 @@
 package www.exam.janvier.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import www.exam.janvier.DTO.FicheSecuriteProduitDTO;
+import www.exam.janvier.dto.FicheSecuriteProduitDTO;
 import www.exam.janvier.entity.FicheSecuriteEntity;
 import www.exam.janvier.entity.ProduitEntity;
 import www.exam.janvier.repository.ProduitRepository;
@@ -13,10 +12,11 @@ import java.util.Set;
 
 @Service
 public class ProduitServiceImpl implements ProduitService {
-    @Autowired
-    private ProduitRepository produitRepo;
+    private final ProduitRepository produitRepo;
 
-
+    public ProduitServiceImpl(ProduitRepository produitRepo){
+        this.produitRepo=produitRepo;
+    }
     @Override
     public List<ProduitEntity> getAll() {
         return produitRepo.findAll();
