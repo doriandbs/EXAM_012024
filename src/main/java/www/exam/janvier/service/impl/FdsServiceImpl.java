@@ -11,6 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -43,6 +44,15 @@ public class FdsServiceImpl implements FdsService {
     public List<FicheSecuriteEntity> findAll() {
         List<FicheSecuriteEntity> list = ficheSecuriteRepo.findAll();
         return list;
+    }
+
+    @Override
+    public void updateStatut(Long ficheId, String nouveauStatut) {
+        FicheSecuriteEntity fiche = ficheSecuriteRepo.findById(ficheId)
+                .orElseThrow(() -> new RuntimeException("Fiche non trouvée"));
+        fiche.setStatut(nouveauStatut);
+        fiche.setDateMaj(LocalDate.now());
+        ficheSecuriteRepo.save(fiche);
     }
 
 }

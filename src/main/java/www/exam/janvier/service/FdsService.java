@@ -9,4 +9,6 @@ public interface FdsService {
 
     public byte[] convertPdf(String filePath) throws IOException;
     List<FicheSecuriteEntity> findAll();
+
+    void updateStatut(Long ficheId, String nouveauStatut);
 }
