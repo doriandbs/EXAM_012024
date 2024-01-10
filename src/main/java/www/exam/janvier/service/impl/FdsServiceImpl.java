@@ -5,9 +5,11 @@ import org.springframework.stereotype.Service;
 import www.exam.janvier.DTO.FicheSecuriteProduitDTO;
 import www.exam.janvier.entity.FicheSecuriteEntity;
 import www.exam.janvier.entity.ProduitEntity;
+import www.exam.janvier.entity.UtilisateurEntity;
 import www.exam.janvier.repository.FicheSecuriteRepository;
 import www.exam.janvier.repository.ProduitRepository;
 import www.exam.janvier.service.FdsService;
+import www.exam.janvier.service.NotificationService;
 import www.exam.janvier.service.UtilisateurService;
 
 import java.io.ByteArrayOutputStream;
@@ -30,6 +32,11 @@ public class FdsServiceImpl implements FdsService {
 
     @Autowired
     private UtilisateurService utilisateurService;
+
+    @Autowired
+    private NotificationService notificationService;
+
+
 
 
     public byte[] convertPdf(String path) throws IOException {
@@ -79,6 +86,21 @@ public class FdsServiceImpl implements FdsService {
         fiche.setStatut(nouveauStatut);
         fiche.setDateMaj(LocalDate.now());
         ficheSecuriteRepo.save(fiche);
+        if ("inactive".equals(nouveauStatut)) {
+            List<ProduitEntity> produits = produitRepo.findByFicheId(ficheId);
+            for (ProduitEntity produit : produits) {
+                List<UtilisateurEntity> utilisateurs = utilisateurService.findByProductId(produit.getId());
+                for (UtilisateurEntity utilisateur : utilisateurs) {
+                    if (utilisateur.getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_CLIENT"))) {
+                        notificationService.sendNotificationEmail(
+                                utilisateur.getMail(),
+                                "Mise à jour de la Fiche de Sécurité",
+                                "La fiche de sécurité "+ fiche.getName() + " du produit " + produit.getNom() + " a été mise à jour."
+                        );
+                    }
+                }
+            }
+        }
     }
 
 }

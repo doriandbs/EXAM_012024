@@ -20,6 +20,8 @@ public class UtilisateurEntity {
 
     @Column(nullable = false)
     private String password;
+    @Column(unique = true, nullable = false)
+    private String mail;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

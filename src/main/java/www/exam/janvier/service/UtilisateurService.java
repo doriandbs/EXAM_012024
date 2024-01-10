@@ -12,5 +12,7 @@ public interface UtilisateurService {
     Optional<UtilisateurEntity> findById(Long id);
     List<UtilisateurEntity> findAllByRole(String roleName);
 
+    List<UtilisateurEntity> findByProductId(Long id);
+
 
 }

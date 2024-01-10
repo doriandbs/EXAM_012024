@@ -35,4 +35,9 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     public List<UtilisateurEntity> findAllByRole(String roleName) {
         return utilisateurRepo.findByRole(roleName);
     }
+
+    @Override
+    public List<UtilisateurEntity> findByProductId(Long id) {
+        return utilisateurRepo.findByProductId(id);
+    }
 }

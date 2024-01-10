@@ -16,5 +16,9 @@ public interface UtilisateurRepository extends JpaRepository<UtilisateurEntity,L
     @Query("SELECT u FROM UtilisateurEntity u JOIN u.roles r WHERE r.name = :roleName")
     List<UtilisateurEntity> findByRole(String roleName);
 
+    @Query("SELECT u FROM UtilisateurEntity u JOIN u.produits p WHERE p.id = :id")
+    List<UtilisateurEntity> findByProductId(Long id);
+
+
 
 }
