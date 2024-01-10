@@ -6,6 +6,7 @@ import www.exam.janvier.entity.UtilisateurEntity;
 import www.exam.janvier.repository.UtilisateurRepository;
 import www.exam.janvier.service.UtilisateurService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,5 +30,9 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     @Override
     public Optional<UtilisateurEntity> findById(Long id) {
         return utilisateurRepo.findById(id);
+    }
+
+    public List<UtilisateurEntity> findAllByRole(String roleName) {
+        return utilisateurRepo.findByRole(roleName);
     }
 }

@@ -2,6 +2,7 @@ package www.exam.janvier.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import www.exam.janvier.entity.FicheSecuriteEntity;
 import www.exam.janvier.repository.FicheSecuriteRepository;
 import www.exam.janvier.service.FdsService;
 import www.exam.janvier.service.UtilisateurService;
@@ -10,6 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class FdsServiceImpl implements FdsService {
@@ -35,6 +37,12 @@ public class FdsServiceImpl implements FdsService {
             }
             return byteArrayOutputStream.toByteArray();
         }
+    }
+
+    @Override
+    public List<FicheSecuriteEntity> findAll() {
+        List<FicheSecuriteEntity> list = ficheSecuriteRepo.findAll();
+        return list;
     }
 
 }

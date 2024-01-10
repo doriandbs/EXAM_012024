@@ -6,16 +6,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import www.exam.janvier.DTO.FdsDTO;
 import www.exam.janvier.DTO.ProduitDTO;
-import www.exam.janvier.entity.FicheSecuriteEntity;
 import www.exam.janvier.entity.ProduitEntity;
 import www.exam.janvier.entity.UtilisateurEntity;
+import www.exam.janvier.mapper.ProduitMapper;
 import www.exam.janvier.service.FdsService;
 import www.exam.janvier.service.ProduitService;
 import www.exam.janvier.service.UtilisateurService;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -32,6 +30,8 @@ public class ProduitController {
     @Autowired
     private UtilisateurService utilisateurService;
 
+    @Autowired
+    private ProduitMapper produitMapper;
     @GetMapping("/user/produits")
     public ResponseEntity<List<ProduitDTO>> getProduitsForUser() {
         String userActif = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -43,43 +43,11 @@ public class ProduitController {
         UtilisateurEntity user = userOpt.get();
         Set<ProduitEntity> produits = user.getProduits();
 
-        List<ProduitDTO> produitDTOs = produits.stream().map(this::convertToProduitDTO).collect(Collectors.toList());
+        List<ProduitDTO> produitDTOs = produits.stream().map(produit -> produitMapper.convertToDTO(produit)).collect(Collectors.toList());
 
         return ResponseEntity.ok(produitDTOs);
     }
 
-    private ProduitDTO convertToProduitDTO(ProduitEntity produit) {
-        ProduitDTO produitDTO = new ProduitDTO();
-        produitDTO.setId(produit.getId());
-        produitDTO.setNom(produit.getNom());
-
-        List<FdsDTO> fdsDTOs = produit.getFichesSecurite()
-                .stream()
-                .map(this::convertToFdsDTO)
-                .collect(Collectors.toList());
-        produitDTO.setFiches(fdsDTOs);
-
-        return produitDTO;
-    }
-
-    private FdsDTO convertToFdsDTO(FicheSecuriteEntity fiche) {
-        FdsDTO fdsDTO = new FdsDTO();
-        fdsDTO.setNom(fiche.getName());
-        fdsDTO.setId(fiche.getId());
-        fdsDTO.setCheminPdf(fiche.getCheminPdf());
-        fdsDTO.setStatut(fiche.getStatut());
-        fdsDTO.setDateCreation(fiche.getDateCreation());
-        fdsDTO.setDateMaj(fiche.getDateMaj());
-
-        try {
-            byte[] pdfContent = fdsService.convertPdf(fiche.getCheminPdf());
-            fdsDTO.setPdfContent(pdfContent);
-        } catch (IOException e) {
-            System.out.println("erreur : " + e.getMessage());
-        }
-
-        return fdsDTO;
-    }
 
 
 }

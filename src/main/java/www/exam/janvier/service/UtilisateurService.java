@@ -2,6 +2,7 @@ package www.exam.janvier.service;
 
 import www.exam.janvier.entity.UtilisateurEntity;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UtilisateurService {
@@ -9,6 +10,7 @@ public interface UtilisateurService {
     UtilisateurEntity save(UtilisateurEntity entity);
     UtilisateurEntity findByUsername(String username);
     Optional<UtilisateurEntity> findById(Long id);
+    List<UtilisateurEntity> findAllByRole(String roleName);
 
 
 }
