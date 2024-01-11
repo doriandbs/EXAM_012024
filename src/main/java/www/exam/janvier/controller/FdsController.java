@@ -1,5 +1,6 @@
 package www.exam.janvier.controller;
 
+import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -62,7 +63,7 @@ public class FdsController {
     @PostMapping("/upload")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> uploadFichierPDF(@RequestParam("nomFichier") String nomFichier,
-                                                   @RequestParam("produitId") Long produitId,
+                                                   @Nullable @RequestParam("produitId") Long produitId,
                                                    @RequestParam("fichier") MultipartFile fichier) {
         try {
             String cheminFichier = pdfPath + fichier.getOriginalFilename();
@@ -76,10 +77,11 @@ public class FdsController {
             fiche.setDateMaj(LocalDate.now());
             fiche.setStatut("active");
             FicheSecuriteEntity savedFiche = fdsService.saveFicheSecurite(fiche);
-
-            Optional<ProduitEntity> produit = produitService.getById(produitId);
-            produit.get().getFichesSecurite().add(savedFiche);
-            produitService.ajouterProduit(produit.get());
+            if(produitId!=null) {
+                Optional<ProduitEntity> produit = produitService.getById(produitId);
+                produit.get().getFichesSecurite().add(savedFiche);
+                produitService.save(produit.get());
+            }
 
             return ResponseEntity.ok(Map.of("message", "Fichier téléchargé et fiche créée avec succès"));
         } catch (Exception e) {
