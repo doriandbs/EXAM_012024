@@ -13,5 +13,10 @@ public interface FdsService {
 
     void updateStatut(Long ficheId, String nouveauStatut);
 
+    FicheSecuriteEntity findById(Long ficheId) throws IOException;
+
     FicheSecuriteEntity saveFicheSecurite(FicheSecuriteEntity fiche);
+
+    List<FicheSecuriteEntity> findAllWithoutProduct();
+
 }

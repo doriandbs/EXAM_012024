@@ -10,6 +10,6 @@ public interface ProduitService {
     List<ProduitEntity> getAll();
     Optional<ProduitEntity> getById(Long id);
 
-    ProduitEntity ajouterProduit(ProduitEntity produit);
+    ProduitEntity save(ProduitEntity produit);
 
 }

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import www.exam.janvier.dto.FdsDTO;
 import www.exam.janvier.dto.FicheSecuriteProduitDTO;
 import www.exam.janvier.entity.FicheSecuriteEntity;
 import www.exam.janvier.entity.ProduitEntity;
@@ -32,7 +33,7 @@ public class FdsController {
     private final FdsService fdsService;
 
     private final ProduitService produitService;
-
+    private final FdsMapper fdsMapper;
     @Value("${pdf.download.path}")
     private String pdfPath;
 
@@ -41,6 +42,7 @@ public class FdsController {
     public FdsController(FdsService fdsService, SocieteService societeService, FdsMapper fdsMapper,ProduitService produitService) {
         this.fdsService = fdsService;
         this.produitService=produitService;
+        this.fdsMapper = fdsMapper;
     }
 
     @GetMapping("/")
@@ -48,6 +50,14 @@ public class FdsController {
     public List<FicheSecuriteProduitDTO> getFds() throws IOException {
        return fdsService.findAll();
     }
+
+    @GetMapping("/withoutProduct")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<FdsDTO> getFdsWithoutProduct() throws IOException {
+        List<FicheSecuriteEntity> fiches = fdsService.findAllWithoutProduct();
+        return fiches.stream().map(fdsMapper::convertToDTO).toList();
+    }
+
 
     @PutMapping("/{ficheId}/updatestatut")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

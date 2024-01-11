@@ -26,7 +26,7 @@ public class ProduitServiceImpl implements ProduitService {
     }
 
     @Override
-    public ProduitEntity ajouterProduit(ProduitEntity produit) {
+    public ProduitEntity save(ProduitEntity produit) {
         return produitRepo.save(produit);
     }
 

@@ -17,10 +17,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class FdsServiceImpl implements FdsService {
@@ -104,10 +101,28 @@ public class FdsServiceImpl implements FdsService {
         }
     }
 
+    @Override
+    public FicheSecuriteEntity findById(Long ficheId) throws IOException {
+        return ficheSecuriteRepo.findById(ficheId).get();
+    }
+
 
     @Override
     public FicheSecuriteEntity saveFicheSecurite(FicheSecuriteEntity fiche){
        return  ficheSecuriteRepo.save(fiche);
+    }
+
+    @Override
+    public List<FicheSecuriteEntity> findAllWithoutProduct() {
+        List<FicheSecuriteEntity> fiches = ficheSecuriteRepo.findAll();
+        List<ProduitEntity> produitsAvecFiches = produitRepo.findProduitsWithFiches();
+        Set<FicheSecuriteEntity> fichesDansProduit = new HashSet<>();
+
+        for (ProduitEntity produit : produitsAvecFiches) {
+            fichesDansProduit.addAll(produit.getFichesSecurite());
+        }
+        fiches.removeAll(fichesDansProduit);
+        return fiches;
     }
 
 
