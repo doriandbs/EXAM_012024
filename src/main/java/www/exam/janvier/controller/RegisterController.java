@@ -35,7 +35,7 @@ public class RegisterController {
 
         SocieteEntity newSociete = new SocieteEntity();
         newSociete.setNomSociete(registerDTO.getNomsociete());
-        RoleEntity clientRole = roleService.findByName("ROLE_CLIENT");
+        RoleEntity clientRole = roleService.findByName("ROLE_ADMIN");
 
         newSociete.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
         newSociete.setRoles(Collections.singleton(clientRole));

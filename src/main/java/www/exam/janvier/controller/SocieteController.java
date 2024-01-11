@@ -15,6 +15,7 @@ import www.exam.janvier.service.SocieteService;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/societes")
@@ -34,7 +35,7 @@ public class SocieteController {
     }
 
     @PostMapping("/addClient")
-    public ResponseEntity<String> addClient(@RequestBody RegisterDTO registerDTO) {
+    public ResponseEntity<?> addClient(@RequestBody RegisterDTO registerDTO) {
         if(societeService.existByNomSociete(registerDTO.getNomsociete())) {
             return ResponseEntity.badRequest().body("Société déjà enregistrée");
         }
@@ -47,7 +48,7 @@ public class SocieteController {
         newSociete.setRoles(Collections.singleton(clientRole));
         newSociete.setMail(registerDTO.getMail());
         societeService.save(newSociete);
-        return ResponseEntity.ok("Société enregistrée");
+        return ResponseEntity.ok(Map.of("message","Société enregistrée"));
     }
 
     @GetMapping("/clients")
