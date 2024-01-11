@@ -45,10 +45,10 @@ public class FdsController {
         this.fdsMapper = fdsMapper;
     }
 
-    @GetMapping("/")
+    @GetMapping("/{statut}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public List<FicheSecuriteProduitDTO> getFds() throws IOException {
-       return fdsService.findAll();
+    public List<FicheSecuriteProduitDTO> getFds(@PathVariable String statut) throws IOException {
+       return fdsService.findAllByStatut(statut);
     }
 
     @GetMapping("/withoutProduct")

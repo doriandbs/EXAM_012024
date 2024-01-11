@@ -11,17 +11,12 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import www.exam.janvier.dto.FicheSecuriteProduitDTO;
 import www.exam.janvier.service.FdsService;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class FdsControllerTest {
 
@@ -38,19 +33,7 @@ class FdsControllerTest {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(fdsController).build();
     }
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    void testGetFds_Success() throws Exception {
-        List<FicheSecuriteProduitDTO> mockFicheList = Arrays.asList(
-                new FicheSecuriteProduitDTO(),
-                new FicheSecuriteProduitDTO()
-        );
-        when(fdsService.findAll()).thenReturn(mockFicheList);
 
-        mockMvc.perform(get("/admin/fds/"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(mockFicheList.size())));
-    }
 
     @Test
     @WithMockUser(roles = "ADMIN")

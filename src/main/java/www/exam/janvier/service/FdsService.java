@@ -9,7 +9,7 @@ import java.util.List;
 public interface FdsService {
 
     public byte[] convertPdf(String filePath) throws IOException;
-    List<FicheSecuriteProduitDTO> findAll() throws IOException;
+    List<FicheSecuriteProduitDTO> findAllByStatut(String statut) throws IOException;
 
     void updateStatut(Long ficheId, String nouveauStatut);
 

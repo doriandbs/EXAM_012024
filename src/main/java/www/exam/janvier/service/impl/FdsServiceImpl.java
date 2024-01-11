@@ -54,8 +54,8 @@ public class FdsServiceImpl implements FdsService {
         }
     }
 
-    public List<FicheSecuriteProduitDTO> findAll() throws IOException {
-        List<FicheSecuriteEntity> list = ficheSecuriteRepo.findAll();
+    public List<FicheSecuriteProduitDTO> findAllByStatut(String statut) throws IOException {
+        List<FicheSecuriteEntity> list = ficheSecuriteRepo.findByStatut(statut);
         List<ProduitEntity> produitsAvecFiches = produitRepo.findProduitsWithFiches();
 
         Map<Long, ProduitEntity> ficheToProduitMap = new HashMap<>();
