@@ -1,6 +1,7 @@
 package www.exam.janvier.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,6 +31,9 @@ public class FdsController {
     private final FdsService fdsService;
 
     private final ProduitService produitService;
+
+    @Value("${pdf.download.path}")
+    private String pdfPath;
 
 
     @Autowired
@@ -61,8 +65,7 @@ public class FdsController {
                                                    @RequestParam("produitId") Long produitId,
                                                    @RequestParam("fichier") MultipartFile fichier) {
         try {
-            String repertoire = "C:\\Users\\Dorian\\Documents\\examen2024\\";
-            String cheminFichier = repertoire + fichier.getOriginalFilename();
+            String cheminFichier = pdfPath + fichier.getOriginalFilename();
             Path path = Paths.get(cheminFichier);
             Files.write(path, fichier.getBytes());
 
