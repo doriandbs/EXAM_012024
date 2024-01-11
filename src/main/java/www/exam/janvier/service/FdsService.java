@@ -1,6 +1,7 @@
 package www.exam.janvier.service;
 
 import www.exam.janvier.dto.FicheSecuriteProduitDTO;
+import www.exam.janvier.entity.FicheSecuriteEntity;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,4 +12,6 @@ public interface FdsService {
     List<FicheSecuriteProduitDTO> findAll() throws IOException;
 
     void updateStatut(Long ficheId, String nouveauStatut);
+
+    FicheSecuriteEntity saveFicheSecurite(FicheSecuriteEntity fiche);
 }

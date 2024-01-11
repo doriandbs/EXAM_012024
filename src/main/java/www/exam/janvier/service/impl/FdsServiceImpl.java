@@ -104,4 +104,11 @@ public class FdsServiceImpl implements FdsService {
         }
     }
 
+
+    @Override
+    public FicheSecuriteEntity saveFicheSecurite(FicheSecuriteEntity fiche){
+       return  ficheSecuriteRepo.save(fiche);
+    }
+
+
 }
